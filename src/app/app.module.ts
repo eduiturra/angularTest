@@ -9,6 +9,8 @@ import { counterReducer } from './reducers/counter.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import { CounterEffects } from './effects/counter.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { CounterEffects } from './effects/counter.effects';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({ count: counterReducer }),
-    EffectsModule.forRoot([CounterEffects])
+    EffectsModule.forRoot([CounterEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

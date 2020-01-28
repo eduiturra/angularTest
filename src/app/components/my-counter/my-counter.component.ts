@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, interval, fromEvent, from, of, timer } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { increment, decrement, reset } from 'src/app/actions/counter.actions';
+import { increment, decrement, reset, effect } from 'src/app/actions/counter.actions';
+import { pluck, map, take, mergeMap, switchMap } from 'rxjs/operators';
+import { filterCount } from 'src/app/selectors/count-selector';
 
 @Component({
   selector: 'app-my-counter',
@@ -10,22 +12,29 @@ import { increment, decrement, reset } from 'src/app/actions/counter.actions';
 })
 export class MyCounterComponent {
 
-  count$: Observable<number>;
- 
-  constructor(private store: Store<{ count: number }>) {
-    this.count$ = store.pipe(select('count'));
+  count$: Observable<any>;
+  constructor(private store: Store<any>) {
+
+    this.store.subscribe(data => console.log(data));
+    this.count$ = store.pipe(
+      select(filterCount)
+    );
   }
- 
+
   increment() {
     this.store.dispatch(increment());
   }
- 
+
   decrement() {
     this.store.dispatch(decrement());
   }
- 
+
   reset() {
     this.store.dispatch(reset());
+  }
+
+  set(data: any) {
+    this.store.dispatch(effect({cont: data.value}));
   }
 
 }

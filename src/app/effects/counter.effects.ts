@@ -6,14 +6,14 @@ import { reset, effect} from '../actions/counter.actions';
 
 @Injectable()
 export class CounterEffects {
- 
+
   loadMovies$ = createEffect(() => this.actions$.pipe(
     ofType(reset),
     tap(() => console.log('effect')),
     mergeMap(() => of(effect({cont: 10})))
     )
   );
- 
+
   constructor(
     private actions$: Actions
   ) {}
